@@ -139,4 +139,4 @@ def new_task_function():
 
     print('Joined data loaded from Snowflake and written to PostgreSQL successfully.')
 
-# new_task_function()
+new_task_function()
