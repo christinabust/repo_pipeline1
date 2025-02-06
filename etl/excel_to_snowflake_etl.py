@@ -88,5 +88,5 @@ def excel_to_snowflake_etl():
     spark.stop()
 
 
-excel_to_snowflake_etl()
+# excel_to_snowflake_etl()
 
