@@ -39,7 +39,7 @@ def fleet_excel_to_snowflake_etl():
         # github_url = "https://github.com/python-vic/ETL_EXCEL_SF/raw/refs/heads/master/AdventureWorks_Sales.xlsx"  # Replace with the actual raw URL
         # github_url = "https://github.com/christinabust/repo_pipline/tree/5c6aad14a51f97e47fc4a0080330247fc8a976c7/data/fleet_service_data_new.xls"
         # https://github.com/christinabust/repo_pipline/blob/5c6aad14a51f97e47fc4a0080330247fc8a976c7/data/fleet_service_data_new.xls
-        github_url = "https://github.com/christinabust/repo_pipeline1/blob/main/data/fleet_service_data.xlsx"
+        github_url = "https://github.com/christinabust/repo_pipeline1/raw/refs/heads/main/data/fleet_service_data.xlsx"
         
         # Step 1: Download the Excel file from GitHub
         response = requests.get(github_url)
@@ -52,9 +52,9 @@ def fleet_excel_to_snowflake_etl():
         excel_file = BytesIO(response.content)  # Treat the content as a file
         # sheets = pd.ExcelFile(excel_file)  
         # Step 1: Get all sheet names using Pandas
-        excel_file = pd.ExcelFile(excel_file, engine='openpyxl')
+        # excel_file = pd.ExcelFile(excel_file, engine='openpyxl')
+        excel_file = pd.ExcelFile(excel_file)
         sheet_names = excel_file.sheet_names
-        
         '''
         #   Specify the engine manually
         excel_file = pd.ExcelFile(excel_file, engine='openpyxl')  # Use 'xlrd' if your file is .xls
