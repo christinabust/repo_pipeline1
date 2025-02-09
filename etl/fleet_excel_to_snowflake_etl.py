@@ -38,8 +38,8 @@ def fleet_excel_to_snowflake_etl():
         # github_url = "https://github.com/python-vic/ETL_EXCEL_SF/raw/refs/heads/master/AdventureWorks_Sales.xlsx"  # Replace with the actual raw URL
         # github_url = "https://github.com/christinabust/repo_pipline/tree/5c6aad14a51f97e47fc4a0080330247fc8a976c7/data/fleet_service_data_new.xls"
         # https://github.com/christinabust/repo_pipline/blob/5c6aad14a51f97e47fc4a0080330247fc8a976c7/data/fleet_service_data_new.xls
-        github_url = "https://github.com/christinabust/repo_pipline1/blob/main/data/fleet_service_data.xlsx"
-
+        github_url = "https://github.com/christinabust/repo_pipeline1/blob/main/data/fleet_service_data.xlsx"
+        
         # Step 1: Download the Excel file from GitHub
         response = requests.get(github_url)
         if response.status_code == 200:

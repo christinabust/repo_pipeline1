@@ -93,12 +93,12 @@ def fleet_new_task_function():
         return fleet_df
 
     def load_from_snowflake_to_postgresql(snowflake_options: dict, pg_url: str, pg_properties: dict):
-        joined_df = load_and_join_tables(snowflake_options)
+        fleet_df = load_and_join_tables(snowflake_options)
         
         # Ensure there are no empty column names and no duplicate column names
-        joined_df = joined_df.toDF(*[col.replace(' ', '_').replace('"', '').replace('-', '_') if col else f"col_{i}" for i, col in enumerate(joined_df.columns)])
-        joined_df = joined_df.toDF(*[f"{col}_{i}" if joined_df.columns.count(col) > 1 else col for i, col in enumerate(joined_df.columns)])
-        print(joined_df.columns)
+        fleet_df = joined_df.toDF(*[col.replace(' ', '_').replace('"', '').replace('-', '_') if col else f"col_{i}" for i, col in enumerate(joined_df.columns)])
+        fleet_df = joined_df.toDF(*[f"{col}_{i}" if joined_df.columns.count(col) > 1 else col for i, col in enumerate(joined_df.columns)])
+        print(fleet_df.columns)
         
         # Truncate the existing table in PostgreSQL before loading new data
         from psycopg2 import connect
@@ -119,9 +119,9 @@ def fleet_new_task_function():
             with conn.cursor() as cursor:
                 cursor.execute("TRUNCATE TABLE AdventureWorks RESTART IDENTITY CASCADE")
                 conn.commit()
-                print("AdventureWorks table truncated successfully.")
+                print("Fleet Service table truncated successfully.")
         except Exception as e:
-            print(f"Failed to truncate table AdventureWorks: {e}")
+            print(f"Failed to truncate table Fleet Service: {e}")
         finally:
             if conn:
                 conn.close()
@@ -130,10 +130,10 @@ def fleet_new_task_function():
         jdbc_url = f"jdbc:postgresql://{pg_url.split('//')[1]}"
 
         # Write joined data to PostgreSQL
-        if joined_df:
-            joined_df.write \
+        if fleet_df:
+            fleet_df.write \
                 .jdbc(url=jdbc_url, table="fleet_service", mode="overwrite", properties=pg_properties)
-            print("Joined data written to PostgreSQL")
+            print("fleet data written to PostgreSQL")
         else:
             print("No sheets could be joined due to missing common columns.")
 
@@ -145,6 +145,6 @@ def fleet_new_task_function():
         'currentSchema': os.getenv('POSTGRESQL_SCHEMA')
     })
 
-    print('Joined data loaded from Snowflake and written to PostgreSQL successfully.')
+    print('Fleet data loaded from Snowflake and written to PostgreSQL successfully.')
 
 # fleet_new_task_function()
