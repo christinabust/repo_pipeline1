@@ -8,7 +8,7 @@ def fleet_excel_to_snowflake_etl():
     import requests
     from io import BytesIO
     # Load environment variables
-  
+    
     # Create a Spark session
     spark = SparkSession.builder \
         .appName("Snowflake to PostgreSQL") \
@@ -35,6 +35,7 @@ def fleet_excel_to_snowflake_etl():
     
     # Function to load all sheets from an Excel file and write them to Snowflake
     def load_and_write_excel_to_snowflake(snowflake_options: dict):
+        
         # github_url = "https://github.com/python-vic/ETL_EXCEL_SF/raw/refs/heads/master/AdventureWorks_Sales.xlsx"  # Replace with the actual raw URL
         # github_url = "https://github.com/christinabust/repo_pipline/tree/5c6aad14a51f97e47fc4a0080330247fc8a976c7/data/fleet_service_data_new.xls"
         # https://github.com/christinabust/repo_pipline/blob/5c6aad14a51f97e47fc4a0080330247fc8a976c7/data/fleet_service_data_new.xls
@@ -51,9 +52,14 @@ def fleet_excel_to_snowflake_etl():
         excel_file = BytesIO(response.content)  # Treat the content as a file
         # sheets = pd.ExcelFile(excel_file)  
         # Step 1: Get all sheet names using Pandas
-        excel_file = pd.ExcelFile(excel_file)
+        excel_file = pd.ExcelFile(excel_file, engine='openpyxl')
         sheet_names = excel_file.sheet_names
-
+        
+        '''
+        #   Specify the engine manually
+        excel_file = pd.ExcelFile(excel_file, engine='openpyxl')  # Use 'xlrd' if your file is .xls
+        # Rest of your code...  
+        '''
         # Step 2: Load each sheet into a Spark DataFrame
         spark_dfs = {}
         for sheet_name in sheet_names:
@@ -87,9 +93,10 @@ def fleet_excel_to_snowflake_etl():
     # Load and write the AdventureWorks data from an Excel file to Snowflake
     # excel_file_path = excel_path  # Use raw string
     load_and_write_excel_to_snowflake(snowflake_options)
+   
 
     spark.stop()
 
 
-# fleet_excel_to_snowflake_etl()
+fleet_excel_to_snowflake_etl()
 
